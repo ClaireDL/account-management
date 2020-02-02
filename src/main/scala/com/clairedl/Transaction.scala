@@ -10,6 +10,6 @@ case class Transaction(
 ) {
 
   override def toString(): String = {
-    s"$date, $account, $reference, $amount, $category, $detailedCat"
+    s"$date, $reference, $amount, $category, $detailedCat, $account, "
   }
 }

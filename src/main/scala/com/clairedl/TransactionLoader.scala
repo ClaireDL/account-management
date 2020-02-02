@@ -46,8 +46,15 @@ class CurrentAccountTransactionLoader extends TransactionLoader {
       .getLines()
       .map { line =>
         val split = line.split(",")
-        Transaction(split(0), split(1), split(2).toDouble, "detailedCat", "category", "currentAccount")
+        Transaction(
+          split(0),
+          TransactionFormatting.simplifyReference(split(1)),
+          TransactionFormatting.stringToDouble(split(2)),
+          "detailedCat",
+          "category",
+          "currentAccount")
       }
     .toList
   }
+
 }

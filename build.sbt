@@ -8,7 +8,8 @@ lazy val root = (project in file("."))
     name := "AccountManagement",
     libraryDependencies ++= Seq(
       "com.typesafe" % "config" % "1.4.0",
-      "ch.qos.logback" % "logback-classic" % "1.2.3"
+      "ch.qos.logback" % "logback-classic" % "1.2.3",
+      "org.json4s" %% "json4s-native" % "3.2.11"
     )
   )
 
