@@ -7,27 +7,15 @@ trait TransactionLoader {
   def load(): List[Transaction]
 }
 
-class CsvTransactionLoader(val filePath: String, val header: Boolean) extends TransactionLoader {
+class CsvTransactionLoader(filePath: String, header: Boolean) extends TransactionLoader {
   def load(): List[Transaction] = {
     header match {
-      case true   => withHeader()
-      case false  => noHeader()
+      case true   => splitCsv().drop(1)
+      case false  => splitCsv()
     }
   }
 
-  private def withHeader(): List[Transaction] = {
-    Source
-      .fromFile(filePath)
-      .getLines()
-      .drop(1)
-      .map { line =>
-        val split = line.split(",")
-        Transaction(split(0), split(1), split(2).toDouble, split(3), split(4), split(5))
-      }
-    .toList
-  }
-
-    private def noHeader(): List[Transaction] = {
+  private def splitCsv(): List[Transaction] = {
     Source
       .fromFile(filePath)
       .getLines()
@@ -48,10 +36,10 @@ class CurrentAccountTransactionLoader extends TransactionLoader {
         val split = line.split(",")
         Transaction(
           split(0),
-          TransactionFormatting.simplifyReference(split(1)),
-          TransactionFormatting.stringToDouble(split(2)),
+          TransactionConverter.simplifyReference(split(1)),
+          TransactionConverter.stringToDouble(split(2)),
           "detailedCat",
-          "category",
+          TransactionConverter.matchCategory(split(4)),
           "currentAccount")
       }
     .toList
