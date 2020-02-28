@@ -4,8 +4,8 @@ case class Transaction(
   date: String,
   reference: String,
   amount: Double,
-  subCat: String,
   category: String,
+  subCat: String,
   account: String
 ) {
 

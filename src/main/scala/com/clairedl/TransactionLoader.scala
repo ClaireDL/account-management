@@ -7,6 +7,10 @@ trait TransactionLoader {
   def load(): List[Transaction]
 }
 
+
+/**
+* Temporary version with known input
+*/
 class CsvTransactionLoader(filePath: String, header: Boolean) extends TransactionLoader {
   def load(): List[Transaction] = {
     header match {
@@ -34,15 +38,36 @@ class CurrentAccountTransactionLoader extends TransactionLoader {
       .getLines()
       .map { line =>
         val split = line.split(",")
+        
+        val reference = TransactionConverter.simplifyReference(split(1))
+
+        val category: String = 
+          split.length match {
+            case 3 => "?"
+            case _ => split(4)
+          }
+
+        val detailedCat: String = 
+          split.length match {
+            case 3 => TransactionConverter.matchCategory(reference)
+            case _ => split(3)
+          }
+        
+        val currentAccount: String =
+          split.length match {
+            case 3 | 5 => "?"
+            case _ => split(5)
+          }
+
         Transaction(
           split(0),
-          TransactionConverter.simplifyReference(split(1)),
+          reference,
           TransactionConverter.stringToDouble(split(2)),
-          "detailedCat",
-          TransactionConverter.matchCategory(split(4)),
-          "currentAccount")
+          category,
+          detailedCat,
+          currentAccount
+        )
       }
     .toList
   }
-
 }

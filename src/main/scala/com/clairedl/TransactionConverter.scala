@@ -4,6 +4,9 @@ import scala.util.matching.Regex
 
 object TransactionConverter {
 
+  /**
+  * Converts a string into a double for cells with doubles
+  */
   def stringToDouble(s: String): Double = {
     val string = s.replace("\"", "")
     val separator = new Regex(",")
@@ -27,16 +30,11 @@ object TransactionConverter {
   * Returns the main category the reference belongs to
   * if it is found in the list of categories and subcategories
   */
-  def matchCategory(s: String): Option[(String, String)] = {
-    val category = 
-      Matches.catSimple.get(
-        { case (key, value) => value == s}
-      )
-    def matchedCategory: String = category match {
-      case Some(value) => value
-      case None => "?"
+  def matchCategory(s: String): String = {
+    val matchedCat: Option[String] = Categories.catSimple.get(s)
+    matchedCat match {
+      case Some(cat)  => cat
+      case None       => "not found"
     }
-
-    matchedCategory
   }
 }

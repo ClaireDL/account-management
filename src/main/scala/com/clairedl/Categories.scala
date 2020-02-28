@@ -1,6 +1,6 @@
 package com.clairedl.scala
 
-object Matches {
+object Categories {
   // val categories: Map[String, List[Map[String, List[String]]]] = 
   //   ("bills", 
   //     ("council tax", ("Council tax","CC tax")),
@@ -14,7 +14,7 @@ object Matches {
 
   val catSimple: Map[String, String] = 
     Map(
-      ("council tax", "Council tax"),
-      ("electricity",	"Scottish power")
+      ("council tax" -> "Council tax"),
+      ("electricity" ->	"Scottish power")
     )
 }
